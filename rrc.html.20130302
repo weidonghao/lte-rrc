@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function Go_Decode()
+{
+var xmlhttp;
+var str;
+var rrctype;
+
+str=document.getElementById("input_pdu").value;
+rrctype=document.getElementById("rrc_type").value;
+
+var postStr="hexStr="+str+"&type="+rrctype;
+
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("output_pdu").value=xmlhttp.responseText;
+    }
+  }
+if(rrctype=='1'){
+	xmlhttp.open("POST","rrc_bcch_bch_dec.php",true);
+	xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlhttp.send(postStr);
+}  
+if(rrctype=='2'){
+	xmlhttp.open("POST","rrc_bcch_dl_sch_dec.php",true);
+	xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlhttp.send(postStr);
+} 
+if(rrctype=='3'){
+	xmlhttp.open("POST","rrc_dl_dcch_dec.php",true);
+	xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlhttp.send(postStr);
+} 
+if(rrctype=='4'){
+	xmlhttp.open("POST","rrc_dl_ccch_dec.php",true);
+	xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlhttp.send(postStr);
+}
+if(rrctype=='6'){
+	xmlhttp.open("POST","rrc_ul_ccch_dec.php",true);
+	xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlhttp.send(postStr);
+}
+if(rrctype=='7'){
+	xmlhttp.open("POST","rrc_ul_dcch_dec.php",true);
+	xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlhttp.send(postStr);
+}
+
+
+//xmlhttp.open("POST","rrc_dec.php",true);
+//xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+
+
+//xmlhttp.send();
+//xmlhttp.send(postStr);
+}
+</script>
+</head> 
+<body>
+<div id="intro">
+	<h1>LTE RRC Online Decoder<a href="http://weibo.com/3194460194"><img src="weibo.png" width="60" height="40" align="top"></a></h1>
+	<h2>Instruction</h2>
+	<p>This page is intended for LTE learning.</p>
+	<h2>Support Team</h2>
+	<p>Please send comments to weidonghao8@gmail.com, any support requests are welcome.</p>
+</div>
+<div>
+	<textarea id="input_pdu" cols="100" rows="6">70 12 98 13 FD 94 04 9A 73 05 97 2B 21 0C 3F 0C 00 C2 01 6B F4 0D 8E C0</textarea>
+	<br><br>
+	Message Type
+    <select id="rrc_type"> 
+        <option selected="selected" value="4">LTE-RRC.DL.CCCH</option>
+		
+        <option value="2">LTE-RRC.BCCH.DL.SCH</option>
+        <option value="1">LTE-RRC.BCCH.BCH</option>
+        <option value="3">LTE-RRC.DL.DCCH</option>
+		<option value="5">LTE-RRC.PCCH</option>
+        <option value="6">LTE-RRC.UL.CCCH</option>
+		<option value="7">LTE-RRC.UL.DCCH</option>
+		<option value="8">NAS-EPS</option>
+    </select> &nbsp;&nbsp;&nbsp;&nbsp;
+	
+	<input value="Parse" onclick="Go_Decode()" type="button">
+	<br><br>
+	<textarea id="output_pdu" cols="100" rows="15"></textarea>
+<br>
+	<h2>Samples</h2>
+
+	<dl>
+	<dt>BCCH-BCH</dt>
+	<dd>- MasterInformationBlock : 6E 98 00</dd>
+	<dt>LTE-RRC.BCCH.DL.SCH</dt>
+	<dd>- systemInformationBlockType1 : 40 D1 80 81 A3 01 02 08 04 08 00 20 38 78 02 20 21 01 08 5E C0 00 00 00 00 00 00 00 00 00 00 00</dd>
+	<dd>- systemInformationBlockType2 : 00 00 19 03 1F 2F D4 A0 30 46 03 96 A0 C0 01 04 01 20 53 FD 15 44 2E 19 A3 73 35 C0 00 00 00 00</dd>
+	<dd>- systemInformationBlockType3 : 00 04 10 4A 2D 90 40 00 00 00 00 00 00 00 00</dd>
+	<dd>- systemInformationBlockType4 : 00 09 84 0A 88 17 10 80 44 00 00 00 00 00 00</dd>
+	<dt>UL-CCCH</dt>
+	<dd>- RRCConnectionRequest : 52 30 AC 4C 7E 46 AC 4C</dd>
+	<dt>UL-DCCH</dt>
+	<dd>- RRCConnectionSetupComplete : 24 20 80 00 01 46 07 41 71 0B F6 42 F0 10 80 00 01 00 00 00 02 04 E0 E0 C0 40 00 21 02 01 D0 11 D1 27 1A 80 80 21 10 01 00 00 10 81 06 00 00 00 00 83 06 00 00 00 00 00 0D 00 00 0A 00 52 42 F0 10 09 01 5C 0A 00 31 03 E5 C0 34 E0</dd>
+	<dt>DL-CCCH</dt>
+	<dd>- RRCConnectionSetup : 70 12 98 13 FD 94 04 9A 73 05 97 2B 21 0C 3F 0C 00 C2 01 6B F4 0D 8E C0</dd>
+	<dt>DL-DCCH</dt>
+	<dd>- RRCConnectionReconfiguration : 22 0B 14 97 33 BA 6E EC 33 27 63 0C DA 81 81 B0 1C A0 06 00 07 EB 00 29 F1 10 94 E9 4B C9 89 8F 2A A3 66 00 00 A2 02 00 04 61 02 00 00 00 00 00</dd>
+	</dl>
+	
+</div>
+
+<div id="myDiv">
+	<p id="demo"></p>
+</div>
+
+</body>
+</html> 

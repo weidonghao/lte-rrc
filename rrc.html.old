@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+function Go_Decode()
+{
+var xmlhttp;
+var str;
+var rrctype;
+
+str=document.getElementById("input_pdu").value;
+rrctype=document.getElementById("rrc_type").value;
+
+var postStr="hexStr="+str+"&type="+rrctype;
+
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("output_pdu").value=xmlhttp.responseText;
+    }
+  }
+if(rrctype=='1'){
+	xmlhttp.open("POST","rrc_bcch_bch_dec.php",true);
+	xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlhttp.send(postStr);
+}  
+if(rrctype=='2'){
+	xmlhttp.open("POST","rrc_bcch_dl_sch_dec.php",true);
+	xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlhttp.send(postStr);
+} 
+if(rrctype=='4'){
+	xmlhttp.open("POST","rrc_dl_ccch_dec.php",true);
+	xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlhttp.send(postStr);
+}
+if(rrctype=='6'){
+	xmlhttp.open("POST","rrc_ul_ccch_dec.php",true);
+	xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlhttp.send(postStr);
+}
+if(rrctype=='7'){
+	xmlhttp.open("POST","rrc_ul_dcch_dec.php",true);
+	xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+	xmlhttp.send(postStr);
+}
+
+
+//xmlhttp.open("POST","rrc_dec.php",true);
+//xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+
+
+//xmlhttp.send();
+//xmlhttp.send(postStr);
+}
+</script>
+</head> 
+<body>
+<div id="intro">
+	<h1>LTE RRC Online Decoder</h1>
+	<h2>Instruction</h2>
+	<p>This page is intended for LTE learning.</p>
+	<h2>Support Team</h2>
+	<p>Please send comments to weidonghao8@gmail.com, any support requests are welcome.</p>
+</div>
+<div>
+	<textarea id="input_pdu" cols="100" rows="6">70 12 98 13 FD 94 04 9A 73 05 97 2B 21 0C 3F 0C 00 C2 01 6B F4 0D 8E C0</textarea>
+	<br><br>
+	Message Type
+    <select id="rrc_type"> 
+        <option selected="selected" value="4">LTE-RRC.DL.CCCH</option>
+		
+        <option value="2">LTE-RRC.BCCH.DL.SCH</option>
+        <option value="1">LTE-RRC.BCCH.BCH</option>
+        <option value="3">LTE-RRC.DL.DCCH</option>
+		<option value="5">LTE-RRC.PCCH</option>
+        <option value="6">LTE-RRC.UL.CCCH</option>
+		<option value="7">LTE-RRC.UL.DCCH</option>
+		<option value="8">NAS-EPS</option>
+    </select> &nbsp;&nbsp;&nbsp;&nbsp;
+	
+	<input value="Parse" onclick="Go_Decode()" type="button">
+	<br><br>
+	<textarea id="output_pdu" cols="100" rows="15"></textarea>
+<br>
+
+</div>
+
+<div id="myDiv">
+	<p id="demo"></p>
+</div>
+
+</body>
+</html> 
